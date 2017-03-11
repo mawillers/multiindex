@@ -42,6 +42,11 @@ public final class ArrayListIndexTest
         m_sequentialIndex.clear();
         assertThat(m_sequentialIndex.isEmpty(), is(true));
         assertThat(m_sequentialIndex.size(), is(0));
+
+        m_sequentialIndex.add(m_data1);
+        m_sequentialIndex.clear();
+        assertThat(m_sequentialIndex.isEmpty(), is(true));
+        assertThat(m_sequentialIndex.size(), is(0));
     }
 
     @Test
@@ -49,6 +54,8 @@ public final class ArrayListIndexTest
     {
         final boolean b = m_sequentialIndex.add(m_data1);
         assertThat(b, is(true));
+        assertThat(m_sequentialIndex.isEmpty(), is(false));
+        assertThat(m_sequentialIndex.size(), is(1));
     }
 
     @Test
