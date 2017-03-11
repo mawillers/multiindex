@@ -9,4 +9,19 @@ package com.github.mawillers.multiindex;
  */
 public final class MultiIndexContainer<V>
 {
+    private MultiIndexContainer()
+    {
+        // Nothing to do, but make this constructor private so that the factory method is used instead.
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @return the new instance, never null
+     * @param <V> the type that the new container is to contain
+     */
+    public static <V> MultiIndexContainer<V> create()
+    {
+        return new MultiIndexContainer<>();
+    }
 }
