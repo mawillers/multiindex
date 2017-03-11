@@ -1,5 +1,7 @@
 package com.github.mawillers.multiindex;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -50,5 +52,17 @@ public final class MultiIndexContainer<V>
         final ArrayListIndex<V> index = new ArrayListIndex<>();
         m_indexes.add(index);
         return index;
+    }
+
+    /**
+     * Removes the specified index from this container.
+     *
+     * @param index the index, must not be null
+     */
+    public void removeIndex(Index<V> index)
+    {
+        checkNotNull(index, "Index argument was null but expected non-null");
+
+        m_indexes.remove(index);
     }
 }

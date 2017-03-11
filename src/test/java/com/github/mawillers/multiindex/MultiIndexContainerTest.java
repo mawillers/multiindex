@@ -31,4 +31,14 @@ public final class MultiIndexContainerTest
         mi.createSequentialIndex();
         assertThat(mi.indexes(), is(iterableWithSize(1)));
     }
+
+    @Test
+    public void testIndexRemoval()
+    {
+        final MultiIndexContainer<Integer> mi = MultiIndexContainer.create();
+        final Index<Integer> index = mi.createSequentialIndex();
+
+        mi.removeIndex(index);
+        assertThat(mi.indexes(), is(emptyIterable()));
+    }
 }
