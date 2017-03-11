@@ -9,6 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Multi-Index-Container</name>
     <description>A Java container with dynamic indexes</description>
+    <url>https://github.com/mawillers/multiindex</url>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
