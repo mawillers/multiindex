@@ -8,37 +8,43 @@ import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.iterableWithSize;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public final class MultiIndexContainerTest
 {
+    private MultiIndexContainer<Employee> m_multiIndexContainer;
+
+    @Before
+    public void setup()
+    {
+        m_multiIndexContainer = MultiIndexContainer.create();
+    }
+
     @Test
     public void testCreation()
     {
-        final MultiIndexContainer<Integer> mi = MultiIndexContainer.create();
-        assertThat(mi, is(not(nullValue())));
-        final Index<Integer> index = mi.createSequentialIndex();
+        assertThat(m_multiIndexContainer, is(not(nullValue())));
+        final Index<Employee> index = m_multiIndexContainer.createSequentialIndex();
         assertThat(index, is(notNullValue()));
     }
 
     @Test
     public void testIteration()
     {
-        final MultiIndexContainer<Integer> mi = MultiIndexContainer.create();
-        assertThat(mi.indexes(), is(emptyIterable()));
+        assertThat(m_multiIndexContainer.indexes(), is(emptyIterable()));
 
-        mi.createSequentialIndex();
-        assertThat(mi.indexes(), is(iterableWithSize(1)));
+        m_multiIndexContainer.createSequentialIndex();
+        assertThat(m_multiIndexContainer.indexes(), is(iterableWithSize(1)));
     }
 
     @Test
     public void testIndexRemoval()
     {
-        final MultiIndexContainer<Integer> mi = MultiIndexContainer.create();
-        final Index<Integer> index = mi.createSequentialIndex();
+        final Index<Employee> index = m_multiIndexContainer.createSequentialIndex();
 
-        mi.removeIndex(index);
-        assertThat(mi.indexes(), is(emptyIterable()));
+        m_multiIndexContainer.removeIndex(index);
+        assertThat(m_multiIndexContainer.indexes(), is(emptyIterable()));
     }
 }
