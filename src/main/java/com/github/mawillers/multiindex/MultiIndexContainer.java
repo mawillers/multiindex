@@ -24,4 +24,15 @@ public final class MultiIndexContainer<V>
     {
         return new MultiIndexContainer<>();
     }
+
+    /**
+     * Creates a new sequential index.
+     *
+     * @return the new index, never null
+     */
+    public Index<V> createSequentialIndex()
+    {
+        final ArrayListIndex<V> index = new ArrayListIndex<>();
+        return index;
+    }
 }
