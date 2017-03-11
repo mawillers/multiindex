@@ -5,7 +5,7 @@ in defined order) with a HashMap (for quick lookup via some key).
 
 ### Prerequisites
 
-This software requires Java 8.
+This software requires Java 8 and Guava.
 
 ### Installing
 
@@ -19,6 +19,7 @@ Run `mvn test` for compiling the code and running all unit tests.
 
 * [Maven](https://maven.apache.org) - Dependency Management
 * [Hamcrest](http://hamcrest.org) - Expressive matchers for JUnit
+* [Guava](https://github.com/google/guava) - Generic tools
 
 ## Versioning
 
