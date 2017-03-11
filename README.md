@@ -18,6 +18,7 @@ Run `mvn test` for compiling the code and running all unit tests.
 ## Built with
 
 * [Maven](https://maven.apache.org) - Dependency Management
+* [Hamcrest](http://hamcrest.org) - Expressive matchers for JUnit
 
 ## Versioning
 
