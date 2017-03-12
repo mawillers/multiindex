@@ -15,8 +15,6 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public final class MultiIndexContainerTest
 {
-    private final Employee m_data1 = new Employee(1, "Harris", 26, "Sunnydale");
-
     private MultiIndexContainer<Employee> m_multiIndexContainer;
 
     @Before
@@ -57,7 +55,7 @@ public final class MultiIndexContainerTest
         final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
         final SequentialIndex<Employee> seq2 = m_multiIndexContainer.createSequentialIndex();
 
-        seq1.add(m_data1);
-        assertThat(seq2, contains(m_data1));
+        seq1.add(TD.m_data1);
+        assertThat(seq2, contains(TD.m_data1));
     }
 }
