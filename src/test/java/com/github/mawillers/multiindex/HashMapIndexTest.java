@@ -1,6 +1,8 @@
 package com.github.mawillers.multiindex;
 
+import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
@@ -89,6 +91,19 @@ public final class HashMapIndexTest
         assertThat(m_byId.containsValue(TD.m_data1), is(true));
         assertThat(m_byId.containsValue(TD.m_data2), is(true));
         assertThat(m_byId.containsValue(TD.m_data3), is(false));
+    }
+
+    @Test
+    public void testGetOptional()
+    {
+        m_byId.add(TD.m_data1);
+        m_byId.add(TD.m_data2);
+
+        assertThat(m_byId.getOptional(1), isPresent());
+        assertThat(m_byId.getOptional(2), isPresent());
+        assertThat(m_byId.getOptional(3), not(isPresent()));
+        assertThat(m_byId.getOptional(4), not(isPresent()));
+        assertThat(m_byId.getOptional(0), not(isPresent()));
     }
 
     @Test

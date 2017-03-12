@@ -3,6 +3,7 @@ package com.github.mawillers.multiindex;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -93,6 +94,14 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
     public boolean containsValue(Object value)
     {
         return m_index.containsValue(value);
+    }
+
+    @Override
+    public Optional<V> getOptional(K key)
+    {
+        final V value = m_index.get(key);
+        // Since null values are not supported, a null result from the Map lookup can safely be taken as non-existence.
+        return Optional.ofNullable(value);
     }
 
     @Override
