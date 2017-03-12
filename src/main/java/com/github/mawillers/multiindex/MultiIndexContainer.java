@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.function.Function;
 
 /**
  * A container class with dynamic indexes.
@@ -81,6 +82,22 @@ public final class MultiIndexContainer<V>
     public SequentialIndex<V> createSequentialIndex()
     {
         final ArrayListIndex<V> index = new ArrayListIndex<>(this);
+        m_indexes.add(index);
+        return index;
+    }
+
+    /**
+     * Creates a new UniqueIndex that is based on hashing keys.
+     *
+     * @param keyExtractor a function defining which key to use for the values
+     * @return the new index, never null
+     * @param <K> the type of key
+     */
+    public <K> UniqueIndex<K, V> createHashedUniqueIndex(Function<V, K> keyExtractor)
+    {
+        checkNotNull(keyExtractor, "Key extractor argument was null but expected non-null");
+
+        final HashMapIndex<K, V> index = new HashMapIndex<>(this, keyExtractor);
         m_indexes.add(index);
         return index;
     }
