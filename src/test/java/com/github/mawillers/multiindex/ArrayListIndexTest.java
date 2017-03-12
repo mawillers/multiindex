@@ -2,6 +2,9 @@ package com.github.mawillers.multiindex;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
@@ -12,9 +15,11 @@ import org.junit.Test;
 public final class ArrayListIndexTest
 {
     private final Employee m_data1 = new Employee(1, "Harris", 26, "Sunnydale");
+    private final Employee m_data2 = new Employee(2, "Summers", 25, "Sunnydale");
+    private final Employee m_data3 = new Employee(3, "Giles", 54, "Sunnydale");
 
     private MultiIndexContainer<Employee> m_multiIndexContainer;
-    private Index<Employee> m_sequentialIndex;
+    private SequentialIndex<Employee> m_sequentialIndex;
 
     @Before
     public void setup()
@@ -56,6 +61,19 @@ public final class ArrayListIndexTest
         assertThat(b, is(true));
         assertThat(m_sequentialIndex.isEmpty(), is(false));
         assertThat(m_sequentialIndex.size(), is(1));
+    }
+
+    @Test
+    public void testIteration()
+    {
+        assertThat(m_sequentialIndex, is(emptyIterable()));
+
+        m_sequentialIndex.add(m_data1);
+        m_sequentialIndex.add(m_data2);
+        m_sequentialIndex.add(m_data3);
+
+        assertThat(m_sequentialIndex, is(iterableWithSize(3)));
+        assertThat(m_sequentialIndex, contains(m_data1, m_data2, m_data3));
     }
 
     @Test

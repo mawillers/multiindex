@@ -1,13 +1,14 @@
 package com.github.mawillers.multiindex;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
- * An implementation of {@link Index} that uses an ArrayList for storage.
+ * An implementation of {@link SequentialIndex} that uses an ArrayList for storage.
  *
  * @param <V> the type of elements in this index
  */
-final class ArrayListIndex<V> implements Index<V>
+final class ArrayListIndex<V> implements SequentialIndex<V>
 {
     private final ArrayList<V> m_index = new ArrayList<>();
 
@@ -37,6 +38,12 @@ final class ArrayListIndex<V> implements Index<V>
     public int size()
     {
         return m_index.size();
+    }
+
+    @Override
+    public Iterator<V> iterator()
+    {
+        return m_index.iterator();
     }
 
     @Override

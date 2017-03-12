@@ -47,7 +47,7 @@ public final class MultiIndexContainer<V>
      *
      * @return the new index, never null
      */
-    public Index<V> createSequentialIndex()
+    public SequentialIndex<V> createSequentialIndex()
     {
         final ArrayListIndex<V> index = new ArrayListIndex<>();
         m_indexes.add(index);
