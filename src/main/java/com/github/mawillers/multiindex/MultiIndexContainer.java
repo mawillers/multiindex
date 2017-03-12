@@ -21,6 +21,8 @@ public final class MultiIndexContainer<V>
      */
     interface InternalIndex<V> extends Index<V>
     {
+        boolean canAddInternal(V value);
+
         void addInternal(V value);
 
         void clearInternal();
@@ -37,8 +39,10 @@ public final class MultiIndexContainer<V>
 
     boolean addToAllIndexes(V value)
     {
-        m_indexes.forEach(idx -> idx.addInternal(value));
-        return true;
+        final boolean canAdd = m_indexes.stream().allMatch(index -> index.canAddInternal(value));
+        if (canAdd)
+            m_indexes.forEach(idx -> idx.addInternal(value));
+        return canAdd;
     }
 
     void clearAllIndexes()

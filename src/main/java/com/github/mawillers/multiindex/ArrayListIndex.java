@@ -19,6 +19,13 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     }
 
     // --------------------------------------------------------------------
+
+    @Override
+    public boolean canAddInternal(V value)
+    {
+        return true;
+    }
+
     // When these methods are called, all necessary checks have already been done, and we really only need to modify our local data.
 
     @Override
