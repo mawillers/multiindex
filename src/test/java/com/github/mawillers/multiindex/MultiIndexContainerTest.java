@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.iterableWithSize;
 import static org.junit.Assert.assertThat;
@@ -14,6 +15,8 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public final class MultiIndexContainerTest
 {
+    private final Employee m_data1 = new Employee(1, "Harris", 26, "Sunnydale");
+
     private MultiIndexContainer<Employee> m_multiIndexContainer;
 
     @Before
@@ -46,5 +49,15 @@ public final class MultiIndexContainerTest
 
         m_multiIndexContainer.removeIndex(index);
         assertThat(m_multiIndexContainer.indexes(), is(emptyIterable()));
+    }
+
+    @Test
+    public void testTwoSequentialIndexesShouldHaveTheSameContent()
+    {
+        final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
+        final SequentialIndex<Employee> seq2 = m_multiIndexContainer.createSequentialIndex();
+
+        seq1.add(m_data1);
+        assertThat(seq2, contains(m_data1));
     }
 }

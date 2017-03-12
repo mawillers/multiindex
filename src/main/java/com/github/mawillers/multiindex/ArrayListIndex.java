@@ -8,25 +8,48 @@ import java.util.Iterator;
  *
  * @param <V> the type of elements in this index
  */
-final class ArrayListIndex<V> implements SequentialIndex<V>
+final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer.InternalIndex<V>
 {
     private final ArrayList<V> m_index = new ArrayList<>();
+    private final MultiIndexContainer<V> m_container;
 
-    ArrayListIndex()
+    ArrayListIndex(MultiIndexContainer<V> container)
     {
+        m_container = container;
     }
+
+    // --------------------------------------------------------------------
+    // When these methods are called, all necessary checks have already been done, and we really only need to modify our local data.
+
+    @Override
+    public void addInternal(V value)
+    {
+        m_index.add(value);
+    }
+
+    @Override
+    public void clearInternal()
+    {
+        m_index.clear();
+    }
+
+    // --------------------------------------------------------------------
+    // In the following implementations, must make sure that the call is propagated to all other existing indexes as well.
 
     @Override
     public boolean add(V value)
     {
-        return m_index.add(value);
+        return m_container.addToAllIndexes(value);
     }
 
     @Override
     public void clear()
     {
-        m_index.clear();
+        m_container.clearAllIndexes();
     }
+
+    // --------------------------------------------------------------------
+    // Query methods. These can easily be satisfied from our local data alone.
 
     @Override
     public boolean isEmpty()

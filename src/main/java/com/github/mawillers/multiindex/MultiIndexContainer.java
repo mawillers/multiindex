@@ -14,12 +14,39 @@ import java.util.Collections;
  */
 public final class MultiIndexContainer<V>
 {
-    private final ArrayList<Index<V>> m_indexes = new ArrayList<>();
+    /**
+     * This interface is to be implemented by all index implementations.
+     *
+     * @param <V> the type that this container contains
+     */
+    interface InternalIndex<V> extends Index<V>
+    {
+        void addInternal(V value);
+
+        void clearInternal();
+    }
+
+    private final ArrayList<InternalIndex<V>> m_indexes = new ArrayList<>();
 
     private MultiIndexContainer()
     {
         // Nothing to do, but make this constructor private so that the factory method is used instead.
     }
+
+    // --------------------------------------------------------------------
+
+    boolean addToAllIndexes(V value)
+    {
+        m_indexes.forEach(idx -> idx.addInternal(value));
+        return true;
+    }
+
+    void clearAllIndexes()
+    {
+        m_indexes.forEach(idx -> idx.clearInternal());
+    }
+
+    // --------------------------------------------------------------------
 
     /**
      * Creates a new instance.
@@ -49,7 +76,7 @@ public final class MultiIndexContainer<V>
      */
     public SequentialIndex<V> createSequentialIndex()
     {
-        final ArrayListIndex<V> index = new ArrayListIndex<>();
+        final ArrayListIndex<V> index = new ArrayListIndex<>(this);
         m_indexes.add(index);
         return index;
     }
