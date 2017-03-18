@@ -3,6 +3,27 @@
 A container class with dynamic indexes. Use this class instead of combining eg. an ArrayList (for iteration
 in defined order) with a HashMap (for quick lookup via some key).
 
+## Getting started
+
+Create an instance of MultiIndexContainer and create the indexes you require. Then, put and retrieve data via any of those indexes.
+```java
+MultiIndexContainer<Employee> container = MultiIndexContainer.create();
+SequentialIndex<Employee> bySequence = container.createSequentialIndex();
+UniqueIndex<Integer, Employee> byId = container.createHashedUniqueIndex(e -> e.getId());
+
+bySequence.add(new Employee("Jones", 1, "London"));
+bySequence.add(new Employee("Miller", 2, "New York"));
+bySequence.add(new Employee("Smith", 3, "Berlin"));
+bySequence.add(new Employee("Miller", 4, "Bournemouth"));
+[...]
+boolean wasAdded = bySequence.add(new Employee("Jones", 2, "Austin"));
+Assert.isFalse(wasAdded, "Adding this employee violates the uniqueness constraint of byId index");
+
+Optional<Employee> e = byId.getOptional(3);
+if (e.isPresent())
+    ...
+```
+
 ### Prerequisites
 
 This software requires Java 8 and Guava.
