@@ -58,4 +58,46 @@ public final class MultiIndexContainerTest
         seq1.add(TD.m_data1);
         assertThat(seq2, contains(TD.m_data1));
     }
+
+    @Test
+    public void testRemoveWrongType()
+    {
+        final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
+        final UniqueIndex<Integer, Employee> byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+        seq.add(TD.m_data1);
+
+        final Object obj = new Object();
+        final boolean isRemoved = seq.remove(obj);
+        assertThat(isRemoved, is(false));
+        assertThat(seq, contains(TD.m_data1));
+        assertThat(byId.size(), is(1));
+    }
+
+    @Test
+    public void testRemoveExisting()
+    {
+        final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
+        final UniqueIndex<Integer, Employee> byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+        seq.add(TD.m_data1);
+        seq.add(TD.m_data2);
+        seq.add(TD.m_data3);
+
+        final boolean isRemoved = seq.remove(TD.m_data2);
+        assertThat(isRemoved, is(true));
+        assertThat(seq, contains(TD.m_data1, TD.m_data3));
+        assertThat(byId.size(), is(2));
+    }
+
+    @Test
+    public void testRemoveNull()
+    {
+        final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
+        final UniqueIndex<Integer, Employee> byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+        seq.add(TD.m_data1);
+
+        final boolean isRemoved = seq.remove(null);
+        assertThat(isRemoved, is(false));
+        assertThat(seq, contains(TD.m_data1));
+        assertThat(byId.size(), is(1));
+    }
 }

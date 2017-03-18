@@ -60,6 +60,63 @@ public final class ArrayListIndexTest
     }
 
     @Test
+    public void addNullShouldWork()
+    {
+        boolean b = m_sequentialIndex.add(TD.m_data1);
+
+        b = m_sequentialIndex.add(null);
+        assertThat(b, is(true));
+        assertThat(m_sequentialIndex.size(), is(2));
+        b = m_sequentialIndex.add(null);
+        assertThat(b, is(true));
+        assertThat(m_sequentialIndex.size(), is(3));
+    }
+
+    @Test
+    public void removeExisting()
+    {
+        m_sequentialIndex.add(TD.m_data1);
+        m_sequentialIndex.add(TD.m_data2);
+
+        boolean isRemoved = m_sequentialIndex.remove(TD.m_data1);
+        assertThat(isRemoved, is(true));
+        assertThat(m_sequentialIndex.contains(TD.m_data2), is(true));
+    }
+
+    @Test
+    public void removeExistingNull()
+    {
+        m_sequentialIndex.add(null);
+        m_sequentialIndex.add(TD.m_data2);
+
+        boolean isRemoved = m_sequentialIndex.remove(null);
+        assertThat(isRemoved, is(true));
+        assertThat(m_sequentialIndex.contains(TD.m_data2), is(true));
+    }
+
+    @Test
+    public void removeNonExisting()
+    {
+        m_sequentialIndex.add(TD.m_data1);
+        m_sequentialIndex.add(TD.m_data2);
+
+        boolean isRemoved = m_sequentialIndex.remove(TD.m_data3);
+        assertThat(isRemoved, is(false));
+        assertThat(m_sequentialIndex, contains(TD.m_data1, TD.m_data2));
+    }
+
+    @Test
+    public void removeNonExistingNull()
+    {
+        m_sequentialIndex.add(TD.m_data1);
+        m_sequentialIndex.add(TD.m_data2);
+
+        boolean isRemoved = m_sequentialIndex.remove(null);
+        assertThat(isRemoved, is(false));
+        assertThat(m_sequentialIndex.contains(TD.m_data2), is(true));
+    }
+
+    @Test
     public void testContains()
     {
         m_sequentialIndex.add(TD.m_data1);
