@@ -18,6 +18,12 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
         m_container = container;
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> T cast(Object object)
+    {
+        return (T) object;
+    }
+
     // --------------------------------------------------------------------
 
     @Override
@@ -35,6 +41,12 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     }
 
     @Override
+    public boolean removeInternal(V value)
+    {
+        return m_index.remove(value);
+    }
+
+    @Override
     public void clearInternal()
     {
         m_index.clear();
@@ -47,6 +59,22 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     public boolean add(V value)
     {
         return m_container.addToAllIndexes(value);
+    }
+
+    @Override
+    public boolean remove(Object object)
+    {
+        try {
+            // This cast is unchecked here, but checks will be done inside those indexes' removeInternal() methods where the value is actually used as a 'V'.
+            final V value = cast(object);
+            final boolean wasRemoved = removeInternal(value);
+
+            m_container.removeFromAllIndexes(this, value);
+
+            return wasRemoved;
+        } catch (ClassCastException ex) {
+            return false;
+        }
     }
 
     @Override

@@ -26,6 +26,8 @@ public final class MultiIndexContainer<V>
 
         void addInternal(V value);
 
+        boolean removeInternal(V value);
+
         void clearInternal();
     }
 
@@ -44,6 +46,15 @@ public final class MultiIndexContainer<V>
         if (canAdd)
             m_indexes.forEach(idx -> idx.addInternal(value));
         return canAdd;
+    }
+
+    void removeFromAllIndexes(Index<V> except, V value)
+    {
+        checkNotNull(except);
+
+        m_indexes.stream() //
+            .filter(idx -> idx != except) // this index instance has already handled itself
+            .forEach(idx -> idx.removeInternal(value));
     }
 
     void clearAllIndexes()

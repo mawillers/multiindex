@@ -51,6 +51,18 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
     }
 
     @Override
+    public boolean removeInternal(V value)
+    {
+        if (value == null) {
+            // Cannot extract a key from a null value.
+            return false;
+        }
+
+        final K key = m_keyExtractor.apply(value);
+        return m_index.remove(key, value);
+    }
+
+    @Override
     public void clearInternal()
     {
         m_index.clear();

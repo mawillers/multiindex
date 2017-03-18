@@ -8,6 +8,14 @@ package com.github.mawillers.multiindex;
 public interface SequentialIndex<V> extends Index<V>, Iterable<V>
 {
     /**
+     * Removes the first occurrence of the specified value from this index.
+     *
+     * @param value the value
+     * @return true if the value has been removed
+     */
+    public boolean remove(Object value);
+
+    /**
      * Returns true if this index contains the specified value.
      *
      * @param value the value
