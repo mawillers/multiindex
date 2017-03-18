@@ -60,6 +60,18 @@ public final class ArrayListIndexTest
     }
 
     @Test
+    public void testContains()
+    {
+        m_sequentialIndex.add(TD.m_data1);
+        m_sequentialIndex.add(TD.m_data2);
+
+        assertThat(m_sequentialIndex.contains(TD.m_data1), is(true));
+        assertThat(m_sequentialIndex.contains(TD.m_data2), is(true));
+        assertThat(m_sequentialIndex.contains(TD.m_data3), is(false));
+        assertThat(m_sequentialIndex.contains(null), is(false));
+    }
+
+    @Test
     public void testIteration()
     {
         assertThat(m_sequentialIndex, is(emptyIterable()));

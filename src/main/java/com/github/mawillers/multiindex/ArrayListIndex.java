@@ -71,6 +71,12 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     }
 
     @Override
+    public boolean contains(Object value)
+    {
+        return m_index.contains(value);
+    }
+
+    @Override
     public Iterator<V> iterator()
     {
         return m_index.iterator();

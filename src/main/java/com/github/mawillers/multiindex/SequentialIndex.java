@@ -7,4 +7,11 @@ package com.github.mawillers.multiindex;
  */
 public interface SequentialIndex<V> extends Index<V>, Iterable<V>
 {
+    /**
+     * Returns true if this index contains the specified value.
+     *
+     * @param value the value
+     * @return true if this index contains the specified value
+     */
+    public boolean contains(Object value);
 }
