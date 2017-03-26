@@ -73,6 +73,21 @@ public final class MultiIndexContainerTest
     }
 
     @Test
+    public void testAddNullValueFailsWithUniqueIndex()
+    {
+        final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
+        final UniqueIndex<Integer, Employee> byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+
+        seq.add(TD.m_data1);
+        seq.add(TD.m_data1);
+
+        final boolean isAdded = seq.add(null);
+        assertThat(isAdded, is(false));
+        assertThat(seq, contains(TD.m_data1));
+        assertThat(byId.size(), is(1));
+    }
+
+    @Test
     public void testRemoveWrongType()
     {
         final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
