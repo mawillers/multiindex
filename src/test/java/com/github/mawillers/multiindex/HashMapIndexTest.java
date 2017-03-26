@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +19,13 @@ public final class HashMapIndexTest
     private MultiIndexContainer<Employee> m_multiIndexContainer;
     private UniqueIndex<Integer, Employee> m_byId;
 
+    private static final Function<Employee, Integer> s_idExtractor = e -> e.m_id;
+
     @Before
     public void setup()
     {
         m_multiIndexContainer = MultiIndexContainer.create();
-        m_byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+        m_byId = m_multiIndexContainer.createHashedUniqueIndex(s_idExtractor);
     }
 
     @Test
@@ -135,6 +138,50 @@ public final class HashMapIndexTest
         assertThat(m_byId.getOptional(3), not(isPresent()));
         assertThat(m_byId.getOptional(4), not(isPresent()));
         assertThat(m_byId.getOptional(0), not(isPresent()));
+    }
+
+    @Test
+    public void sameInstanceAlwaysEquals()
+    {
+        assertThat(m_byId.equals(m_byId), is(true));
+    }
+
+    @Test
+    public void testSameIndexWithSameKeyExtractorIsEqual()
+    {
+        final UniqueIndex<Integer, Employee> otherSeq = m_multiIndexContainer.createHashedUniqueIndex(s_idExtractor);
+        assertThat(m_byId.hashCode(), is(otherSeq.hashCode()));
+        assertThat(m_byId.equals(otherSeq), is(true));
+    }
+
+    @Test
+    public void testSameIndexWithAnonymousKeyExtractorIsDifferent()
+    {
+        final UniqueIndex<Integer, Employee> otherSeq = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+        // This is rather unfortunate, but unavoidable with current language rules, because functional interfaces can only be compared for identity.
+        assertThat(m_byId.equals(otherSeq), is(false));
+    }
+
+    @Test
+    public void unrelatedTypeIsDifferent()
+    {
+        final Object obj = new Object();
+        assertThat(m_byId.equals(obj), is(false));
+    }
+
+    @Test
+    public void instanceWithAnotherKeyExtractorIsDifferent()
+    {
+        final UniqueIndex<Integer, Employee> otherSeq = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_age);
+        assertThat(m_byId.equals(otherSeq), is(false));
+    }
+
+    @Test
+    public void anotherContainersIndexIsDifferent()
+    {
+        final MultiIndexContainer<Employee> container2 = MultiIndexContainer.create();
+        final UniqueIndex<Integer, Employee> foreignSeq = container2.createHashedUniqueIndex(e -> e.m_id);
+        assertThat(m_byId.equals(foreignSeq), is(false));
     }
 
     @Test

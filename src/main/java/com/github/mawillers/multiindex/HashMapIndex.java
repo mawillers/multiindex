@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -131,6 +132,35 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
         final V value = m_index.get(key);
         // Since null values are not supported, a null result from the Map lookup can safely be taken as non-existence.
         return Optional.ofNullable(value);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(m_container, m_index, m_keyExtractor);
+    }
+
+    /**
+     * Compares the specified object with this Index for equality.
+     * <p>
+     * Returns true if and only if the specified object is also a HashMapIndex, both Indexes originate from the same MultiIndexContainer instance, all
+     * corresponding pairs of elements in the two Indexes are equal, and the key extractor arguments of both Indexes refer to the same Function instance.
+     *
+     * @param o the object to be compared for equality with this Index
+     * @return true if the specified object is equal to this Index
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o == this)
+            return true;
+        if (!(o instanceof HashMapIndex))
+            return false;
+
+        final HashMapIndex<?, ?> other = (HashMapIndex<?, ?>) o;
+        return Objects.equals(m_container, other.m_container) //
+            && Objects.equals(m_index, other.m_index) //
+            && Objects.equals(m_keyExtractor, other.m_keyExtractor);
     }
 
     @Override
