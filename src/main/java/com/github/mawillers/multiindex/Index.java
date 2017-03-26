@@ -1,5 +1,7 @@
 package com.github.mawillers.multiindex;
 
+import java.util.Collection;
+
 /**
  * An index into the MultiIndexContainer.
  *
@@ -17,6 +19,14 @@ public interface Index<V>
      * @return true if value has been added to the container
      */
     public boolean add(V value);
+
+    /**
+     * Appends all of the elements in the specified collection to this index.
+     *
+     * @param values collection containing elements to be added to this index
+     * @return true if value has been added to the container
+     */
+    public boolean addAll(Collection<? extends V> values);
 
     /**
      * Removes all of the elements from the container.

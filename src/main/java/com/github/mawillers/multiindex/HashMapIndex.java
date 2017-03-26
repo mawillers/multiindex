@@ -2,6 +2,7 @@ package com.github.mawillers.multiindex;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Function;
@@ -74,6 +75,12 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
     public boolean add(V value)
     {
         return m_container.addToAllIndexes(value);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends V> values)
+    {
+        return m_container.addAllToAllIndexes(values);
     }
 
     @Override

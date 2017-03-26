@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.junit.Before;
@@ -77,6 +78,22 @@ public final class ArrayListIndexTest
         b = m_sequentialIndex.add(null);
         assertThat(b, is(true));
         assertThat(m_sequentialIndex.size(), is(3));
+    }
+
+    @Test
+    public void addAllShouldAlwaysSucceed()
+    {
+        boolean b = m_sequentialIndex.addAll(Arrays.asList(TD.m_data1, TD.m_data2));
+        assertThat(b, is(true));
+        assertThat(m_sequentialIndex, contains(TD.m_data1, TD.m_data2));
+
+        b = m_sequentialIndex.addAll(Arrays.asList(TD.m_data1, TD.m_data2));
+        assertThat(b, is(true));
+        assertThat(m_sequentialIndex, contains(TD.m_data1, TD.m_data2, TD.m_data1, TD.m_data2));
+
+        b = m_sequentialIndex.addAll(Arrays.asList(TD.m_data1, TD.m_data2, TD.m_data3));
+        assertThat(b, is(true));
+        assertThat(m_sequentialIndex, contains(TD.m_data1, TD.m_data2, TD.m_data1, TD.m_data2, TD.m_data1, TD.m_data2, TD.m_data3));
     }
 
     @Test

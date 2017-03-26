@@ -1,6 +1,7 @@
 package com.github.mawillers.multiindex;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.collect.ForwardingIterator;
@@ -61,6 +62,12 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     public boolean add(V value)
     {
         return m_container.addToAllIndexes(value);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends V> values)
+    {
+        return m_container.addAllToAllIndexes(values);
     }
 
     @Override

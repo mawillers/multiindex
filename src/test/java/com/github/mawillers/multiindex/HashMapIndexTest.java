@@ -7,6 +7,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,6 +67,22 @@ public final class HashMapIndexTest
         b = m_byId.add(TD.m_data3);
         assertThat(b, is(true));
         assertThat(m_byId.isEmpty(), is(false));
+        assertThat(m_byId.size(), is(3));
+    }
+
+    @Test
+    public void testAddAll()
+    {
+        boolean b = m_byId.addAll(Arrays.asList(TD.m_data1, TD.m_data2));
+        assertThat(b, is(true));
+        assertThat(m_byId.size(), is(2));
+
+        b = m_byId.addAll(Arrays.asList(TD.m_data1, TD.m_data2));
+        assertThat(b, is(false));
+        assertThat(m_byId.size(), is(2));
+
+        b = m_byId.addAll(Arrays.asList(TD.m_data1, TD.m_data2, TD.m_data3));
+        assertThat(b, is(true));
         assertThat(m_byId.size(), is(3));
     }
 

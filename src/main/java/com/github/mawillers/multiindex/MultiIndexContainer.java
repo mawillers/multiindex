@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
@@ -103,6 +104,14 @@ public final class MultiIndexContainer<V>
         if (canAdd)
             m_indexes.forEach(idx -> idx.addInternal(value));
         return canAdd;
+    }
+
+    boolean addAllToAllIndexes(Collection<? extends V> values)
+    {
+        final boolean atLeastOneValueWasAdded = values.stream() //
+            .map(value -> addToAllIndexes(value)) //
+            .reduce(false, (result, element) -> result | element);
+        return atLeastOneValueWasAdded;
     }
 
     void removeFromAllIndexes(Index<V> except, V value)
