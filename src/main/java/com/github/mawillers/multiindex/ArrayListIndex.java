@@ -3,6 +3,8 @@ package com.github.mawillers.multiindex;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.common.collect.ForwardingIterator;
+
 /**
  * An implementation of {@link SequentialIndex} that uses an ArrayList for storage.
  *
@@ -107,7 +109,21 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
     @Override
     public Iterator<V> iterator()
     {
-        return m_index.iterator();
+        return new ForwardingIterator<V>() {
+            private final Iterator<V> m_delegate = m_index.iterator();
+
+            @Override
+            protected Iterator<V> delegate()
+            {
+                return m_delegate;
+            }
+
+            @Override
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @Override

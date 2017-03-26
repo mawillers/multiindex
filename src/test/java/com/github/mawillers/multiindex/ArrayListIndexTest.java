@@ -8,14 +8,21 @@ import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+import java.util.Iterator;
+
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 @SuppressWarnings("javadoc")
 public final class ArrayListIndexTest
 {
     private MultiIndexContainer<Employee> m_multiIndexContainer;
     private SequentialIndex<Employee> m_sequentialIndex;
+
+    @Rule
+    public ExpectedException m_exception = ExpectedException.none();
 
     @Before
     public void setup()
@@ -139,6 +146,19 @@ public final class ArrayListIndexTest
 
         assertThat(m_sequentialIndex, is(iterableWithSize(3)));
         assertThat(m_sequentialIndex, contains(TD.m_data1, TD.m_data2, TD.m_data3));
+    }
+
+    @Test
+    public void removeViaIteratorShouldThrow()
+    {
+        m_sequentialIndex.add(TD.m_data1);
+        m_sequentialIndex.add(TD.m_data2);
+
+        final Iterator<Employee> iter = m_sequentialIndex.iterator();
+        iter.next();
+
+        m_exception.expect(UnsupportedOperationException.class);
+        iter.remove();
     }
 
     @Test
