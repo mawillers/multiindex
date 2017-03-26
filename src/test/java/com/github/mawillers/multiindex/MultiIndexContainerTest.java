@@ -38,6 +38,14 @@ public final class MultiIndexContainerTest
     }
 
     @Test
+    public void twoEmptyContainersAreDifferent()
+    {
+        final MultiIndexContainer<Employee> container2 = MultiIndexContainer.create();
+        // This class does not override equals() and hashCode(), so different instances are always non-equal.
+        assertThat(m_multiIndexContainer.equals(container2), is(false));
+    }
+
+    @Test
     public void testIteration()
     {
         assertThat(m_multiIndexContainer.indexes(), is(emptyIterable()));
