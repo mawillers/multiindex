@@ -64,6 +64,33 @@ public final class MultiIndexContainerTest
     }
 
     @Test
+    public void indexRemovalCeasesUpdatesToIt()
+    {
+        final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
+        final SequentialIndex<Employee> seq2 = m_multiIndexContainer.createSequentialIndex();
+
+        seq1.add(TD.m_data1);
+        assertThat(seq2, contains(TD.m_data1));
+
+        m_multiIndexContainer.removeIndex(seq1);
+        assertThat(seq1, contains(TD.m_data1)); // the removed index itself is unchanged
+
+        seq2.add(TD.m_data3);
+        assertThat(seq2, contains(TD.m_data1, TD.m_data3));
+        assertThat(seq1, contains(TD.m_data1)); // this removed index stays unchanged
+
+        // TODO: Calling certain methods on the Index instance that has been removed might still leads to updates to the other indexes.
+        // We rather do not want that.
+        seq1.add(TD.m_data2);
+        // Current behavior:
+        assertThat(seq1, contains(TD.m_data1));
+        assertThat(seq2, contains(TD.m_data1, TD.m_data3, TD.m_data2));
+        // Desired behavior:
+        // assertThat(seq1, contains(TD.m_data1, TD.m_data2));
+        // assertThat(seq2, contains(TD.m_data1, TD.m_data3)); // the other index stays unchanged
+    }
+
+    @Test
     public void testTwoSequentialIndexesShouldHaveTheSameContent()
     {
         final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
