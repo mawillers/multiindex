@@ -5,12 +5,68 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.function.Function;
 
 /**
  * A container class with dynamic indexes.
  * <p>
  * This container stores values of a given type, and allows retrieval of these values by an arbitrary number of indexes.
+ * <p>
+ * Currently, two index types have been implemented, these are:
+ * <ul>
+ * <li>{@link SequentialIndex} - an index that allows sequential access to its values in insertion order
+ * <li>{@link UniqueIndex} - an index that allows access to its values by means of a key
+ * </ul>
+ * <p>
+ * The container itself does not hold any data - all data is contained in the indexes. All indexes must be created before data can be put into the container
+ * (this avoids potentially large overhead when a newly created index must first copy all data into itself).
+ *
+ * <p>
+ * Note: as with standard Java Map or Set data structures, great care must be exercised if mutable objects are put into the container. The behavior of a keyed
+ * index (such as UniqueIndex) is not specified if the value of an object is changed in a manner that affects equals comparisons while the object is a key in
+ * any of the indexes. Since multiple indexes can be active, with each index using another field of the mutable object as key, it can be difficult to determine
+ * which fields are safe to modify. It is best to only put immutable objects into the container, or at least not modify any object after it has been put into
+ * the container.
+ *
+ * <p>
+ * Typical use cases for this container are:
+ * <ul>
+ * <li>a HashMap with defined iteration order (a replacement for the JDK's {@link LinkedHashMap}). For instance:
+ * <!-- @formatter:off -->
+ * <pre>{@code
+ *   MultiIndexContainer<Employee> container = MultiIndexContainer.create();
+ *   SequentialIndex<Employee> bySequence = container.createSequentialIndex(); // contains elements in insertion order
+ *   UniqueIndex<Integer, Employee> byId = container.createHashedUniqueIndex(e -> e.getId()); // allows fast lookup via hash map
+ * }</pre>
+ * <!-- @formatter:on -->
+ *
+ * <li>Fast lookup of values by both key and value (a replacement for Guava's {@link com.google.common.collect.BiMap}). For instance:
+ * <!-- @formatter:off -->
+ * <pre>{@code
+ *   MultiIndexContainer<Employee> container = MultiIndexContainer.create();
+ *   UniqueIndex<Integer, Employee> byKey = container.createHashedUniqueIndex(e -> e.getId()); // lookup via key
+ *   UniqueIndex<Employee, Employee> byValue = container.createHashedUniqueIndex(e -> e); // lookup via value
+ * }</pre>
+ * <!-- @formatter:on -->
+ *
+ * <li>Fast lookup of values by different keys. For instance:
+ * <!-- @formatter:off -->
+ * <pre>{@code
+ *   MultiIndexContainer<Employee> container = MultiIndexContainer.create();
+ *   UniqueIndex<String, Employee> bySSN = container.createHashedUniqueIndex(e -> e.getSSN()); // lookup via Social Security Number
+ *   UniqueIndex<Integer, Employee> byId = container.createHashedUniqueIndex(e -> e.getId()); // lookup via user ID
+ * }</pre>
+ * <!-- @formatter:on -->
+ * </ul>
+ * <p>
+ * Putting values into the container can be done via any of the indexes. If any of the added values violates an index's constraints (for instance,
+ * a value is being added whose one field has the same content as another value's one, and this field is defined by a UniqueIndex as a key), then
+ * addition of this value fails. The {@link Index#add(Object)} method returns false in this case.
+ *
+ * <p>
+ * <strong>Note that this implementation is not synchronized.</strong> If multiple threads access a <tt>MultiIndexContainer</tt> or any Index instance
+ * concurrently, and at least one of the threads modifies the container or any index structurally, it <i>must</i> be synchronized externally.
  *
  * @param <V> the type that this Container contains
  */
