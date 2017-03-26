@@ -3,6 +3,7 @@ package com.github.mawillers.multiindex;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 import com.google.common.collect.ForwardingIterator;
 
@@ -131,6 +132,34 @@ final class ArrayListIndex<V> implements SequentialIndex<V>, MultiIndexContainer
                 throw new UnsupportedOperationException();
             }
         };
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(m_container, m_index);
+    }
+
+    /**
+     * Compares the specified object with this Index for equality.
+     * <p>
+     * Returns true if and only if the specified object is also an ArrayListIndex, both Indexes originate from the same MultiIndexContainer instance, and all
+     * corresponding pairs of elements in the two Indexes are equal.
+     *
+     * @param o the object to be compared for equality with this Index
+     * @return true if the specified object is equal to this Index
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o == this)
+            return true;
+        if (!(o instanceof ArrayListIndex))
+            return false;
+
+        final ArrayListIndex<?> other = (ArrayListIndex<?>) o;
+        return Objects.equals(m_container, other.m_container) //
+            && Objects.equals(m_index, other.m_index);
     }
 
     @Override

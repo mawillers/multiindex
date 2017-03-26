@@ -179,6 +179,35 @@ public final class ArrayListIndexTest
     }
 
     @Test
+    public void sameInstanceAlwaysEquals()
+    {
+        assertThat(m_sequentialIndex.equals(m_sequentialIndex), is(true));
+    }
+
+    @Test
+    public void unrelatedTypeIsDifferent()
+    {
+        final Object obj = new Object();
+        assertThat(m_sequentialIndex.equals(obj), is(false));
+    }
+
+    @Test
+    public void allSequentialIndexesFromSameContainerAreEqual()
+    {
+        final SequentialIndex<Employee> otherSeq = m_multiIndexContainer.createSequentialIndex();
+        assertThat(m_sequentialIndex.hashCode(), is(otherSeq.hashCode()));
+        assertThat(m_sequentialIndex.equals(otherSeq), is(true));
+    }
+
+    @Test
+    public void anotherContainersIndexIsDifferent()
+    {
+        final MultiIndexContainer<Employee> container2 = MultiIndexContainer.create();
+        final SequentialIndex<Employee> foreignSeq = container2.createSequentialIndex();
+        assertThat(m_sequentialIndex.equals(foreignSeq), is(false));
+    }
+
+    @Test
     public void toStringShouldPrependIndexName()
     {
         final String text = m_sequentialIndex.toString();
