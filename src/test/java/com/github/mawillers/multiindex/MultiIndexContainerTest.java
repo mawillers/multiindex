@@ -10,12 +10,17 @@ import static org.hamcrest.Matchers.iterableWithSize;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 @SuppressWarnings("javadoc")
 public final class MultiIndexContainerTest
 {
     private MultiIndexContainer<Employee> m_multiIndexContainer;
+
+    @Rule
+    public ExpectedException m_exception = ExpectedException.none();
 
     @Before
     public void setup()
@@ -127,5 +132,25 @@ public final class MultiIndexContainerTest
         assertThat(isRemoved, is(false));
         assertThat(seq, contains(TD.m_data1));
         assertThat(byId.size(), is(1));
+    }
+
+    @Test
+    public void testCreateSequentialIndexAfterwards()
+    {
+        final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
+        seq1.add(TD.m_data1);
+
+        m_exception.expect(IllegalStateException.class);
+        m_multiIndexContainer.createSequentialIndex();
+    }
+
+    @Test
+    public void testCreateHashedUniqueIndexAfterwards()
+    {
+        final SequentialIndex<Employee> seq1 = m_multiIndexContainer.createSequentialIndex();
+        seq1.add(TD.m_data1);
+
+        m_exception.expect(IllegalStateException.class);
+        m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
     }
 }

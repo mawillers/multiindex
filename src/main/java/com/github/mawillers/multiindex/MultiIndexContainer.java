@@ -1,6 +1,7 @@
 package com.github.mawillers.multiindex;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,6 +93,8 @@ public final class MultiIndexContainer<V>
      */
     public SequentialIndex<V> createSequentialIndex()
     {
+        checkState(m_indexes.stream().findFirst().map(idx -> idx.size()).orElse(0) == 0, "must create all indexes before putting data into the container");
+
         final ArrayListIndex<V> index = new ArrayListIndex<>(this);
         m_indexes.add(index);
         return index;
@@ -107,6 +110,7 @@ public final class MultiIndexContainer<V>
     public <K> UniqueIndex<K, V> createHashedUniqueIndex(Function<V, K> keyExtractor)
     {
         checkNotNull(keyExtractor, "Key extractor argument was null but expected non-null");
+        checkState(m_indexes.stream().findFirst().map(idx -> idx.size()).orElse(0) == 0, "must create all indexes before putting data into the container");
 
         final HashMapIndex<K, V> index = new HashMapIndex<>(this, keyExtractor);
         m_indexes.add(index);
