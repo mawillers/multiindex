@@ -89,7 +89,10 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
     {
         final V valueToRemove = m_index.remove(key);
 
-        m_container.removeFromAllIndexes(this, valueToRemove);
+        // A null result means that this key does not exist in the Map (we don't support null values, because we cannot extract a key from a null value).
+        // This in turn means that no Index can contain what the user is trying to remove, as all indexes contain the same values.
+        if (valueToRemove != null)
+            m_container.removeFromAllIndexes(this, valueToRemove);
 
         return valueToRemove;
     }
