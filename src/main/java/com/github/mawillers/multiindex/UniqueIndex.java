@@ -11,6 +11,14 @@ import java.util.Optional;
 public interface UniqueIndex<K, V> extends Index<V>
 {
     /**
+     * Removes the value that has the specified key in this index.
+     *
+     * @param key the key
+     * @return the previous value associated with key, or null if there was no mapping for key
+     */
+    public V remove(Object key);
+
+    /**
      * Returns true if the index contains a mapping for the specified key.
      *
      * @param key the key

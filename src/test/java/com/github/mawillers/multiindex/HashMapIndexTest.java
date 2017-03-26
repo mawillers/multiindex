@@ -112,6 +112,19 @@ public final class HashMapIndexTest
     }
 
     @Test
+    public void testRemoveKey()
+    {
+        m_byId.add(TD.m_data1);
+        m_byId.add(TD.m_data2);
+        m_byId.add(TD.m_data3);
+
+        m_byId.remove(2);
+        assertThat(m_byId.containsKey(1), is(true));
+        assertThat(m_byId.containsKey(2), is(false));
+        assertThat(m_byId.containsKey(3), is(true));
+    }
+
+    @Test
     public void testGetOptional()
     {
         m_byId.add(TD.m_data1);

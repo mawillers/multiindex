@@ -84,6 +84,16 @@ final class HashMapIndex<K, V> implements UniqueIndex<K, V>, MultiIndexContainer
     }
 
     @Override
+    public V remove(Object key)
+    {
+        final V valueToRemove = m_index.remove(key);
+
+        m_container.removeFromAllIndexes(this, valueToRemove);
+
+        return valueToRemove;
+    }
+
+    @Override
     public void clear()
     {
         m_container.clearAllIndexes();

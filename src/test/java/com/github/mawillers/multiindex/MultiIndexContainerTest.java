@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.iterableWithSize;
@@ -93,6 +94,26 @@ public final class MultiIndexContainerTest
     }
 
     @Test
+    public void testRemovalFromUniqueIndex()
+    {
+        final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
+        final UniqueIndex<Integer, Employee> byId = m_multiIndexContainer.createHashedUniqueIndex(e -> e.m_id);
+
+        seq.add(TD.m_data1);
+        seq.add(TD.m_data2);
+        seq.add(TD.m_data3);
+
+        Employee removed = byId.remove(42);
+        assertThat(removed, is(nullValue()));
+        removed = byId.remove(2);
+        assertThat(removed, is(sameInstance(TD.m_data2)));
+        assertThat(seq, contains(TD.m_data1, TD.m_data3));
+        removed = byId.remove(1);
+        assertThat(removed, is(sameInstance(TD.m_data1)));
+        assertThat(seq, contains(TD.m_data3));
+    }
+
+    @Test
     public void testRemoveWrongType()
     {
         final SequentialIndex<Employee> seq = m_multiIndexContainer.createSequentialIndex();
@@ -102,6 +123,11 @@ public final class MultiIndexContainerTest
         final Object obj = new Object();
         final boolean isRemoved = seq.remove(obj);
         assertThat(isRemoved, is(false));
+        assertThat(seq, contains(TD.m_data1));
+        assertThat(byId.size(), is(1));
+
+        final Employee removed = byId.remove(obj);
+        assertThat(removed, is(nullValue()));
         assertThat(seq, contains(TD.m_data1));
         assertThat(byId.size(), is(1));
     }
