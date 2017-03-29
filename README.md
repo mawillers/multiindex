@@ -30,7 +30,14 @@ This software requires Java 8 and Guava.
 
 ### Installing
 
-Simply copy the JAR file to your project's CLASSPATH.
+To add a dependency using Maven, use the following:
+```xml
+<dependency>
+    <groupId>com.github.mawillers</groupId>
+    <artifactId>multiindex</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
 ## Running the tests
 
