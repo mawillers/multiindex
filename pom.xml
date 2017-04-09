@@ -6,7 +6,7 @@
     </prerequisites>
     <groupId>com.github.mawillers</groupId>
     <artifactId>multiindex</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.RC1-SNAPSHOT</version>
     <name>Multi-Index-Container</name>
     <description>A Java container with dynamic indexes</description>
     <url>https://github.com/mawillers/multiindex</url>
