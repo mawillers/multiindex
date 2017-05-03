@@ -10,6 +10,12 @@
     <name>Multi-Index-Container</name>
     <description>A Java container with dynamic indexes</description>
     <url>https://github.com/mawillers/multiindex</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
