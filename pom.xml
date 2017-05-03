@@ -23,6 +23,11 @@
             <organizationUrl>https://github.com/mawillers</organizationUrl>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:git://github.com/mawillers/multiindex.git</connection>
+        <developerConnection>scm:git:ssh@github.com:mawillers/multiindex.git</developerConnection>
+        <url>https://github.com/mawillers/multiindex.git</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
