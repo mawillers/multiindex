@@ -16,6 +16,13 @@
             <url>https://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Martin Willers</name>
+            <email>M.Willers@gmx.net</email>
+            <organizationUrl>https://github.com/mawillers</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
