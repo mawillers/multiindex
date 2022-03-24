@@ -66,7 +66,7 @@ import java.util.function.Function;
  * addition of this value fails. The {@link Index#add(Object)} method returns false in this case.
  *
  * <p>
- * <strong>Note that this implementation is not synchronized.</strong> If multiple threads access a <tt>MultiIndexContainer</tt> or any Index instance
+ * <strong>Note that this implementation is not synchronized.</strong> If multiple threads access a MultiIndexContainer or any Index instance
  * concurrently, and at least one of the threads modifies the container or any index structurally, it <i>must</i> be synchronized externally.
  *
  * @param <V> the type that this Container contains
